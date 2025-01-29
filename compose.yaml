@@ -1,0 +1,33 @@
+services:
+  postgres-super-quiz:
+    image: 'postgres:16-alpine'
+    container_name: 'postgres-super-quiz'
+    environment:
+      - 'POSTGRES_DB=super_quiz_db'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5431:5432'
+    networks:
+      - super-quiz-network
+
+  super-quiz:
+    build: .
+    restart: always
+    working_dir: /super-quiz
+    environment:
+      TZ: America/Sao_Paulo
+      SPRING.DATASOURCE.URL: jdbc:postgresql://postgres-super-quiz:5432/super_quiz_db
+      SPRING.DATASOURCE.USERNAME: postgres
+      SPRING.DATASOURCE.PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+    depends_on:
+      - postgres-super-quiz
+    networks:
+      - super-quiz-network
+
+networks:
+  super-quiz-network:
+    driver: bridge
