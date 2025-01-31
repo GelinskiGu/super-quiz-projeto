@@ -11,7 +11,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .addServersItem(new Server().url("https://plantas.gelinski.dev"))
+                .addServersItem(new Server().url("https://super-quiz.gelinski.dev"))
                 .info(new Info().title("Eng Software Game API")
                 .version("1.0")
                 .description("Documentation for Eng Software Game API.")
