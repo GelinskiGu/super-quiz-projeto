@@ -19,14 +19,14 @@ public class StudentQuestion {
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "id_question")
+    @JoinColumn(name = "id_answer")
     private Answer answer;
 
     @Column
     private boolean isCorrect;
 
     @Column
-    private String answer;
+    private String word;
 
     @Column
     private String correctAnswer;

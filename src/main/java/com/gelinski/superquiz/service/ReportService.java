@@ -20,7 +20,7 @@ public class ReportService {
     private final StudentRepository studentRepository;
     private final PhaseOneAnswerRepository phaseOneAnswerRepository;
 
-    public List<ReportDTO> generateAllReport() {
+   /* public List<ReportDTO> generateAllReport() {
         List<Student> students = studentRepository.findAll();
         List<ReportDTO> reportDTOS = new ArrayList<>();
         students.forEach(student -> reportDTOS.add(generateReportByStudent(student.getIdStudent())));
@@ -28,9 +28,9 @@ public class ReportService {
 
         reportsWillBeDeleted.forEach(reportDTOS::remove);
         return reportDTOS;
-    }
+    }*/
 
-    public List<ReportDTO> generateReportByGroup(Long idGroup) {
+    /*public List<ReportDTO> generateReportByGroup(Long idGroup) {
         List<Student> students = studentRepository.findByGroup(idGroup);
         if (students.isEmpty()) {
             return new ArrayList<>();
@@ -98,5 +98,5 @@ public class ReportService {
 
     private String convertTries(List<StudentQuestion> studentQuestions) {
         return String.format("%s/%s", studentQuestions.stream().filter(StudentQuestion::isCorrect).count(), studentQuestions.size());
-    }
+    }*/
 }

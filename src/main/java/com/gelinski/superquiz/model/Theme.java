@@ -16,4 +16,8 @@ public class Theme {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "id_group")
+    private Group group;
 }

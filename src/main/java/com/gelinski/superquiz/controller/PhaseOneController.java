@@ -1,6 +1,7 @@
 package com.gelinski.superquiz.controller;
 
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
+import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
 import com.gelinski.superquiz.service.PhaseOneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,5 +23,11 @@ public class PhaseOneController {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createExercise(@RequestBody CreatePhaseOneRequest request) {
+        service.createExercise(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

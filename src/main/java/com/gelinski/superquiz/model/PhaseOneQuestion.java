@@ -25,6 +25,6 @@ public class PhaseOneQuestion {
     @JoinColumn(name = "id_color")
     private Color color;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 }

@@ -1,6 +1,8 @@
 package com.gelinski.superquiz.controller;
 
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
+import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
+import com.gelinski.superquiz.dto.refactor.CreatePhaseTwoRequest;
 import com.gelinski.superquiz.model.Answer;
 import com.gelinski.superquiz.service.PhaseTwoService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ public class PhaseTwoController {
         return ResponseEntity.ok(service.findAllQuestions());
     }
 
-    @PostMapping("/answer/{studentId}/{questionId}")
+    /*@PostMapping("/answer/{studentId}/{questionId}")
     public ResponseEntity<Boolean> saveStudentQuestion(@RequestBody AnsweredQuestionDTO answer, @PathVariable Long studentId, @PathVariable Long questionId) {
         Boolean result;
         try {
@@ -30,5 +32,16 @@ public class PhaseTwoController {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ResponseEntity.ok(result);
+    }*/
+
+    @PostMapping
+    public ResponseEntity<Void> createExercise(@RequestBody CreatePhaseTwoRequest request) {
+        service.createExercise(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/words/{themeId}")
+    public ResponseEntity<List<String>> getWords(@PathVariable Integer themeId) {
+        return ResponseEntity.ok(service.getWords(themeId));
     }
 }

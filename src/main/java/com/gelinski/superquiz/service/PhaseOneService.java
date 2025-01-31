@@ -1,13 +1,15 @@
 package com.gelinski.superquiz.service;
 
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
-import com.gelinski.superquiz.model.PhaseOneAnswer;
-import com.gelinski.superquiz.model.Student;
-import com.gelinski.superquiz.repository.PhaseOneAnswerRepository;
-import com.gelinski.superquiz.repository.StudentRepository;
+import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
+import com.gelinski.superquiz.mapper.PhaseOneQuestionMapper;
+import com.gelinski.superquiz.mapper.singleton.PhaseOneQuestionMapperSingleton;
+import com.gelinski.superquiz.model.*;
+import com.gelinski.superquiz.repository.*;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -18,6 +20,11 @@ import java.util.Objects;
 public class PhaseOneService {
     private final PhaseOneAnswerRepository phaseOneAnswerRepository;
     private final StudentRepository studentRepository;
+
+    private final ThemeRepository themeRepository;
+    private final ColorRepository colorRepository;
+    private final PhaseOneQuestionRepository phaseOneQuestionRepository;
+
     private final Gson gson = new Gson();
 
     public Boolean savePhaseOneAnswer(AnsweredQuestionDTO answeredQuestionDTO, Long studentId) {
@@ -36,5 +43,14 @@ public class PhaseOneService {
             log.error("Error saving student question: {}", e.getMessage());
             throw new RuntimeException("Error saving student question");
         }
+    }
+
+
+    public void createExercise(CreatePhaseOneRequest request) {
+        Theme theme = themeRepository.findById(request.getIdTheme()).orElseThrow();
+        Color color = colorRepository.findById(request.getIdColor()).orElseThrow();
+
+        PhaseOneQuestion mappedObject = PhaseOneQuestionMapperSingleton.getInstance().toEntity(request, theme, color);
+        phaseOneQuestionRepository.save(mappedObject);
     }
 }
