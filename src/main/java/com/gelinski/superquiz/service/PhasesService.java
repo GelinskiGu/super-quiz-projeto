@@ -58,6 +58,7 @@ public class PhasesService {
 
             exercise.setStatements(statements.stream().map(Statement::getStatementDescription).toList());
             exercise.setAnswers(answers.stream().map(answer -> new AnswerDTO(answer.getId(), answer.getDescription())).toList());
+            exercise.setCorrectAnswerId(answers.stream().filter(Answer::getIsCorrectAnswer).findFirst().orElseThrow().getId());
             return exercise;
         }).toList();
 
