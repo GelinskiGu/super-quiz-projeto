@@ -16,6 +16,7 @@ public class PhasesService {
     private final ThemeRepository themeRepository;
     private final AnswerRepository answerRepository;
     private final StatementRepository statementRepository;
+    private final ColorRepository colorRepository;
 
     public RenderPhasesBaseResponse renderPhase(Integer phaseNumber, Integer idTheme, Integer difficultyNumber) {
         Theme theme = themeRepository.findById(idTheme).orElseThrow();
@@ -65,5 +66,10 @@ public class PhasesService {
         phaseTwoRenderResponse.setPhaseTwoExerciseDTOS(phaseTwoExercises);
 
         return phaseTwoRenderResponse;
+    }
+
+    public List<ColorDTO> getColors() {
+        List<Color> colors = colorRepository.findAll();
+        return colors.stream().map(color -> new ColorDTO(color.getId(), color.getHex())).toList();
     }
 }
