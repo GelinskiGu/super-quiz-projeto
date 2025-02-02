@@ -39,6 +39,7 @@ public class PhasesService {
         List<PhaseOneQuestion> allByThemeId = phaseOneQuestionRepository.findAllByThemeIdWithLimit(theme.getId(), difficultyNumber);
 
         allByThemeId.forEach(phaseOneQuestion -> {
+            phaseOneRenderResponse.setPhaseOneId(phaseOneQuestion.getId());
             phaseOneRenderResponse.getPhaseOneWordsDTOS().add(new PhaseOneWordsDTO(phaseOneQuestion.getWord(), phaseOneQuestion.getDescription(), phaseOneQuestion.getColor().getHex()));
             phaseOneRenderResponse.getColors().add(phaseOneQuestion.getColor().getHex());
         });
@@ -57,6 +58,7 @@ public class PhasesService {
             List<Statement> statements = statementRepository.findAllByPhaseTwoExerciseId(phaseTwoExercise.getId());
             List<Answer> answers = answerRepository.findAllByPhaseTwoExerciseId(phaseTwoExercise.getId());
 
+            exercise.setPhaseTwoExerciseId(phaseTwoExercise.getId());
             exercise.setStatements(statements.stream().map(Statement::getStatementDescription).toList());
             exercise.setAnswers(answers.stream().map(answer -> new AnswerDTO(answer.getId(), answer.getDescription())).toList());
             exercise.setCorrectAnswerId(answers.stream().filter(Answer::getIsCorrectAnswer).findFirst().orElseThrow().getId());
