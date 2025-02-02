@@ -20,7 +20,7 @@ public class ReportService {
     private final StudentRepository studentRepository;
     private final PhaseOneAnswerRepository phaseOneAnswerRepository;
 
-   /* public List<ReportDTO> generateAllReport() {
+    public List<ReportDTO> generateAllReport() {
         List<Student> students = studentRepository.findAll();
         List<ReportDTO> reportDTOS = new ArrayList<>();
         students.forEach(student -> reportDTOS.add(generateReportByStudent(student.getIdStudent())));
@@ -28,9 +28,9 @@ public class ReportService {
 
         reportsWillBeDeleted.forEach(reportDTOS::remove);
         return reportDTOS;
-    }*/
+    }
 
-    /*public List<ReportDTO> generateReportByGroup(Long idGroup) {
+    public List<ReportDTO> generateReportByGroup(Long idGroup) {
         List<Student> students = studentRepository.findByGroup(idGroup);
         if (students.isEmpty()) {
             return new ArrayList<>();
@@ -54,7 +54,7 @@ public class ReportService {
     private PhaseOneReportDTO getPhaseOneReport(Student student) {
         List<PhaseOneAnswer> phaseOneAnswers = phaseOneAnswerRepository.findByStudent(student);
         Map<String, List<PhaseOneAnswer>> phaseOneAnswerElementMap = phaseOneAnswers.stream()
-                .collect(Collectors.groupingBy(PhaseOneAnswer::getCorrectAnswer));
+                .collect(Collectors.groupingBy(phaseOneAnswer -> phaseOneAnswer.getPhaseOneQuestion().getWord()));
 
         List<ElementsPhaseOneDTO> elementsPhaseOneDTOS = new ArrayList<>();
 
@@ -74,14 +74,14 @@ public class ReportService {
     private PhaseTwoReportDTO getPhaseTwoReport(Student student) {
         List<StudentQuestion> studentQuestions = studentQuestionRepository.findByStudent(student);
         Map<String, List<StudentQuestion>> studentQuestionElementMap = studentQuestions.stream()
-                .collect(Collectors.groupingBy(studentQuestion -> studentQuestion.getAnswer().getAnswer()));
+                .collect(Collectors.groupingBy(studentQuestion -> studentQuestion.getAnswer().getPhaseTwoExercise().getWord()));
 
         List<PartsPhaseTwoDTO> partsPhaseTwoDTOS = new ArrayList<>();
 
         studentQuestionElementMap.forEach((key, value) -> {
             PartsPhaseTwoDTO partsPhaseTwoDTO = new PartsPhaseTwoDTO();
             partsPhaseTwoDTO.setPart(key);
-            partsPhaseTwoDTO.setTries(convertTries(value));
+            partsPhaseTwoDTO.setTries(value.size());
             partsPhaseTwoDTO.setTime(convertTime((long) value.stream().mapToLong(StudentQuestion::getSeconds).average().orElse(0)));
             partsPhaseTwoDTOS.add(partsPhaseTwoDTO);
         });
@@ -98,5 +98,5 @@ public class ReportService {
 
     private String convertTries(List<StudentQuestion> studentQuestions) {
         return String.format("%s/%s", studentQuestions.stream().filter(StudentQuestion::isCorrect).count(), studentQuestions.size());
-    }*/
+    }
 }

@@ -7,6 +7,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PartsPhaseTwoDTO {
     private String part;
-    private String tries;
+    private Integer tries;
     private String time;
 }

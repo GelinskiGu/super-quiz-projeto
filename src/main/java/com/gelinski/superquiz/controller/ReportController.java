@@ -18,7 +18,7 @@ import java.util.List;
 public class ReportController {
     private final ReportService service;
 
-    /*@GetMapping("/{studentId}")
+    @GetMapping("/{studentId}")
     public ResponseEntity<ReportDTO> getStudentReport(@PathVariable Long studentId) {
         return ResponseEntity.ok(service.generateReportByStudent(studentId));
     }
@@ -31,5 +31,5 @@ public class ReportController {
     @GetMapping("/group/{groupId}")
     public ResponseEntity<List<ReportDTO>> getTeacherReport(@PathVariable Long groupId) {
         return ResponseEntity.ok(service.generateReportByGroup(groupId));
-    }*/
+    }
 }
