@@ -39,8 +39,7 @@ public class PhasesService {
         List<PhaseOneQuestion> allByThemeId = phaseOneQuestionRepository.findAllByThemeIdWithLimit(theme.getId(), difficultyNumber);
 
         allByThemeId.forEach(phaseOneQuestion -> {
-            phaseOneRenderResponse.setPhaseOneId(phaseOneQuestion.getId());
-            phaseOneRenderResponse.getPhaseOneWordsDTOS().add(new PhaseOneWordsDTO(phaseOneQuestion.getWord(), phaseOneQuestion.getDescription(), phaseOneQuestion.getColor().getHex()));
+            phaseOneRenderResponse.getPhaseOneWordsDTOS().add(new PhaseOneWordsDTO(phaseOneQuestion.getId(), phaseOneQuestion.getWord(), phaseOneQuestion.getDescription(), phaseOneQuestion.getColor().getHex()));
             phaseOneRenderResponse.getColors().add(phaseOneQuestion.getColor().getHex());
         });
 

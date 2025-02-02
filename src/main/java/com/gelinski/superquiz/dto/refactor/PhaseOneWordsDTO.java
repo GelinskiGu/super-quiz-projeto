@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PhaseOneWordsDTO {
+    private Long phaseOneId;
     private String word;
     private String description;
     private String color;
