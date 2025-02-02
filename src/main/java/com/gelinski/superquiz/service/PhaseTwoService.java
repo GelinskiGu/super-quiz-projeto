@@ -66,8 +66,7 @@ public class PhaseTwoService {
 
         phaseTwoExercise.setWord(request.getWord());
         phaseTwoExercise.setTheme(theme);
-        PhaseTwoExercise phaseTwoEntity = phaseTwoExerciseRepository.save(phaseTwoExercise);
-        return phaseTwoEntity;
+        return phaseTwoExerciseRepository.save(phaseTwoExercise);
     }
 
     public List<String> getWords(Integer themeId) {
@@ -75,24 +74,23 @@ public class PhaseTwoService {
         return allByThemeId.stream().map(PhaseOneQuestion::getWord).toList();
     }
 
-    /*public Boolean saveStudentQuestion(AnsweredQuestionDTO answeredQuestionDTO, Long studentId, Long questionId) {
-        log.info("AnsweredQuestionDTO: {}, studentId {}, questionId {}", gson.toJson(answeredQuestionDTO), studentId, questionId);
+    public Boolean saveStudentQuestion(AnsweredQuestionDTO answeredQuestionDTO, Long studentId) {
+        log.info("AnsweredQuestionDTO: {}, studentId {}", gson.toJson(answeredQuestionDTO), studentId);
         try {
-            Answer answer = questionRepository.findById(questionId).orElseThrow();
+            Answer answer = questionRepository.findById(answeredQuestionDTO.getAnswerId()).orElseThrow();
             Student student = studentRepository.findById(studentId).orElseThrow();
             StudentQuestion studentQuestion = new StudentQuestion();
 
-            studentQuestion.setCorrect(Objects.equals(answeredQuestionDTO.getAnswer(), answer.getAnswer()));
-            studentQuestion.setAnswer(answeredQuestionDTO.getAnswer());
-            studentQuestion.setCorrectAnswer(answer.getAnswer());
+            studentQuestion.setCorrect(answer.getIsCorrectAnswer());
+            studentQuestion.setAnswer(answer);
             studentQuestion.setSeconds(answeredQuestionDTO.getSeconds());
             studentQuestion.setStudent(student);
-            studentQuestion.setAnswer(answer);
+            studentQuestion.setWord(answer.getPhaseTwoExercise().getWord());
             studentQuestionRepository.save(studentQuestion);
             return studentQuestion.isCorrect();
         } catch (Exception e) {
             log.error("Error saving student question: {}", e.getMessage());
             throw new RuntimeException("Error saving student question");
         }
-    }*/
+    }
 }

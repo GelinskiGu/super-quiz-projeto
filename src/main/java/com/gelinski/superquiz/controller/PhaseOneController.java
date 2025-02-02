@@ -1,6 +1,7 @@
 package com.gelinski.superquiz.controller;
 
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
+import com.gelinski.superquiz.dto.refactor.AnsweredQuestionOneDTO;
 import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
 import com.gelinski.superquiz.model.Group;
 import com.gelinski.superquiz.service.PhaseOneService;
@@ -21,10 +22,10 @@ public class PhaseOneController {
     private final PhaseOneService service;
 
     @PostMapping("/answer/{studentId}")
-    public ResponseEntity<Boolean> saveStudentQuestion(@RequestBody AnsweredQuestionDTO answer, @PathVariable Long studentId) {
+    public ResponseEntity<Boolean> saveStudentQuestion(@RequestBody AnsweredQuestionOneDTO request, @PathVariable Long studentId) {
         Boolean result;
         try {
-            result = service.savePhaseOneAnswer(answer, studentId);
+            result = service.savePhaseOneAnswer(request, studentId);
         } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }

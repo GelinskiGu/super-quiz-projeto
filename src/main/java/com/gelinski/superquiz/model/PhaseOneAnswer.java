@@ -13,16 +13,17 @@ public class PhaseOneAnswer {
     private Long id;
 
     @Column
-    private String answer;
-
-    @Column
-    private String correctAnswer;
+    private Integer idColor;
 
     @Column
     private boolean isCorrect;
 
     @Column
     private Long seconds;
+
+    @ManyToOne
+    @JoinColumn(name = "id_phase_one")
+    private PhaseOneQuestion phaseOneQuestion;
 
     @ManyToOne
     @JoinColumn(name = "id_student")

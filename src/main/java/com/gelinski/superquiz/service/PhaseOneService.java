@@ -1,6 +1,7 @@
 package com.gelinski.superquiz.service;
 
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
+import com.gelinski.superquiz.dto.refactor.AnsweredQuestionOneDTO;
 import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
 import com.gelinski.superquiz.mapper.PhaseOneQuestionMapper;
 import com.gelinski.superquiz.mapper.singleton.PhaseOneQuestionMapperSingleton;
@@ -27,16 +28,18 @@ public class PhaseOneService {
 
     private final Gson gson = new Gson();
 
-    public Boolean savePhaseOneAnswer(AnsweredQuestionDTO answeredQuestionDTO, Long studentId) {
-        log.info("AnsweredQuestionDTO: {}, studentId {}", gson.toJson(answeredQuestionDTO), studentId);
+    public Boolean savePhaseOneAnswer(AnsweredQuestionOneDTO request, Long studentId) {
+        log.info("AnsweredQuestionDTO: {}, studentId {}", gson.toJson(request), studentId);
         try {
             Student student = studentRepository.findById(studentId).orElseThrow();
+            PhaseOneQuestion phaseOneQuestion = phaseOneQuestionRepository.findById(request.getPhaseOneId()).orElseThrow();
+
             PhaseOneAnswer phaseOneAnswer = new PhaseOneAnswer();
             phaseOneAnswer.setStudent(student);
-            phaseOneAnswer.setAnswer(answeredQuestionDTO.getAnswer());
-            phaseOneAnswer.setSeconds(answeredQuestionDTO.getSeconds());
-            phaseOneAnswer.setCorrectAnswer(answeredQuestionDTO.getCorrectAnswer());
-            phaseOneAnswer.setCorrect(Objects.equals(answeredQuestionDTO.getAnswer(), answeredQuestionDTO.getCorrectAnswer()));
+            phaseOneAnswer.setPhaseOneQuestion(phaseOneQuestion);
+            phaseOneAnswer.setIdColor(request.getIdColor());
+            phaseOneAnswer.setSeconds(request.getSeconds());
+            phaseOneAnswer.setCorrect(Objects.equals(request.getIdColor(), phaseOneQuestion.getColor().getId()));
             phaseOneAnswerRepository.save(phaseOneAnswer);
             return phaseOneAnswer.isCorrect();
         } catch (Exception e) {

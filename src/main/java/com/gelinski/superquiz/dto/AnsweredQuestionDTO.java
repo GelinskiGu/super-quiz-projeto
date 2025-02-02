@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AnsweredQuestionDTO {
-    private String answer;
-    private String correctAnswer;
+    private Long answerId;
     private Long seconds;
 }

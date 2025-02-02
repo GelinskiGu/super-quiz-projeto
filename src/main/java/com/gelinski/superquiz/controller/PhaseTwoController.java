@@ -24,16 +24,16 @@ public class PhaseTwoController {
         return ResponseEntity.ok(service.findAllQuestions());
     }
 
-    /*@PostMapping("/answer/{studentId}/{questionId}")
-    public ResponseEntity<Boolean> saveStudentQuestion(@RequestBody AnsweredQuestionDTO answer, @PathVariable Long studentId, @PathVariable Long questionId) {
+    @PostMapping("/answer/{studentId}")
+    public ResponseEntity<Boolean> saveStudentQuestion(@RequestBody AnsweredQuestionDTO answer, @PathVariable Long studentId) {
         Boolean result;
         try {
-            result = service.saveStudentQuestion(answer, studentId, questionId);
+            result = service.saveStudentQuestion(answer, studentId);
         } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ResponseEntity.ok(result);
-    }*/
+    }
 
     @Operation(summary = "Criação de exercício da fase 2. NOVO")
     @PostMapping

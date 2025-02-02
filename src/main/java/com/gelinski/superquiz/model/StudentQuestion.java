@@ -29,8 +29,5 @@ public class StudentQuestion {
     private String word;
 
     @Column
-    private String correctAnswer;
-
-    @Column
     private Long seconds;
 }
