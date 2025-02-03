@@ -3,6 +3,7 @@ package com.gelinski.superquiz.service;
 import com.gelinski.superquiz.builder.report.Director;
 import com.gelinski.superquiz.builder.report.ReportByStudentBuilder;
 import com.gelinski.superquiz.dto.*;
+import com.gelinski.superquiz.iterator.student.StudentIterator;
 import com.gelinski.superquiz.model.PhaseOneAnswer;
 import com.gelinski.superquiz.model.Student;
 import com.gelinski.superquiz.model.StudentQuestion;
@@ -24,7 +25,13 @@ public class ReportService {
     public List<ReportDTO> generateAllReport() {
         List<Student> students = studentRepository.findAll();
         List<ReportDTO> reportDTOS = new ArrayList<>();
-        students.forEach(student -> reportDTOS.add(generateReportByStudent(student.getIdStudent())));
+
+        StudentIterator studentIterator = new StudentIterator(students);
+        while (studentIterator.hasNext()) {
+            Student student = studentIterator.next();
+            reportDTOS.add(generateReportByStudent(student.getIdStudent()));
+        }
+
         List<ReportDTO> reportsWillBeDeleted = reportDTOS.stream().filter(reportDTO -> reportDTO.getPhaseOne().getElements().isEmpty() && reportDTO.getPhaseTwo().getParts().isEmpty()).toList();
 
         reportsWillBeDeleted.forEach(reportDTOS::remove);
@@ -37,7 +44,13 @@ public class ReportService {
             return new ArrayList<>();
         }
         List<ReportDTO> reportDTOS = new ArrayList<>();
-        students.forEach(student -> reportDTOS.add(generateReportByStudent(student.getIdStudent())));
+
+        StudentIterator studentIterator = new StudentIterator(students);
+        while (studentIterator.hasNext()) {
+            Student student = studentIterator.next();
+            reportDTOS.add(generateReportByStudent(student.getIdStudent()));
+        }
+
         return reportDTOS;
     }
 
