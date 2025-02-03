@@ -1,6 +1,8 @@
 package com.gelinski.superquiz.security;
 
 import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.gelinski.superquiz.logger.LoggerFacade;
+import com.gelinski.superquiz.logger.LoggerFactory;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -13,9 +15,9 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
-@Slf4j
 public class JwtTokenFilter extends GenericFilterBean {
     private final JwtTokenProvider tokenProvider;
+    private final LoggerFacade log = LoggerFactory.getLogger(this.getClass());
 
     public JwtTokenFilter(JwtTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
@@ -38,5 +40,4 @@ public class JwtTokenFilter extends GenericFilterBean {
             throw new ServletException("Invalid token");
         }
     }
-
 }

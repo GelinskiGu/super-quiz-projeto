@@ -2,6 +2,8 @@ package com.gelinski.superquiz.service;
 
 import com.gelinski.superquiz.dto.UserDTO;
 import com.gelinski.superquiz.exception.ResourceNotFoundException;
+import com.gelinski.superquiz.logger.LoggerFacade;
+import com.gelinski.superquiz.logger.LoggerFactory;
 import com.gelinski.superquiz.mapper.UserMapper;
 import com.gelinski.superquiz.model.User;
 import com.gelinski.superquiz.repository.UserRepository;
@@ -16,13 +18,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private LoggerFacade log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("loadUserByUsername: {}", username);
+        log.info("loadUserByUsername: " + username);
         var user = userRepository.findByUsername(username);
         if (user != null) {
             return user;
@@ -32,10 +34,10 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDTO findUserById(Long id) {
-        log.info("Finding user {}", id);
+        log.info("Finding user " + id);
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
-            log.error("User {} not exist", id);
+            log.error("User " + id + " not exist");
             throw new ResourceNotFoundException("User not found");
         }
         return UserMapper.INSTANCE.entityToDTO(user.get());

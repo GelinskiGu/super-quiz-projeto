@@ -3,6 +3,8 @@ package com.gelinski.superquiz.service;
 import com.gelinski.superquiz.dto.AnsweredQuestionDTO;
 import com.gelinski.superquiz.dto.refactor.AnsweredQuestionOneDTO;
 import com.gelinski.superquiz.dto.refactor.CreatePhaseOneRequest;
+import com.gelinski.superquiz.logger.LoggerFacade;
+import com.gelinski.superquiz.logger.LoggerFactory;
 import com.gelinski.superquiz.mapper.PhaseOneQuestionMapper;
 import com.gelinski.superquiz.mapper.singleton.PhaseOneQuestionMapperSingleton;
 import com.gelinski.superquiz.model.*;
@@ -17,7 +19,6 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PhaseOneService {
     private final PhaseOneAnswerRepository phaseOneAnswerRepository;
     private final StudentRepository studentRepository;
@@ -27,9 +28,10 @@ public class PhaseOneService {
     private final PhaseOneQuestionRepository phaseOneQuestionRepository;
 
     private final Gson gson = new Gson();
+    private final LoggerFacade log = LoggerFactory.getLogger(this.getClass());
 
     public Boolean savePhaseOneAnswer(AnsweredQuestionOneDTO request, Long studentId) {
-        log.info("AnsweredQuestionDTO: {}, studentId {}", gson.toJson(request), studentId);
+        log.info("AnsweredQuestionDTO: " + gson.toJson(request) + ", studentId " + studentId);
         try {
             Student student = studentRepository.findById(studentId).orElseThrow();
             PhaseOneQuestion phaseOneQuestion = phaseOneQuestionRepository.findById(request.getPhaseOneId()).orElseThrow();
@@ -43,7 +45,7 @@ public class PhaseOneService {
             phaseOneAnswerRepository.save(phaseOneAnswer);
             return phaseOneAnswer.isCorrect();
         } catch (Exception e) {
-            log.error("Error saving student question: {}", e.getMessage());
+            log.error("Error saving student question: {}", e);
             throw new RuntimeException("Error saving student question");
         }
     }
