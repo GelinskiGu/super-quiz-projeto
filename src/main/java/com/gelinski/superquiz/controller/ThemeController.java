@@ -22,6 +22,12 @@ public class ThemeController {
         return ResponseEntity.ok(themeService.getThemes(studentId));
     }
 
+    @Operation(summary = "Listagem dos temas existentes, para o professor. NOVO")
+    @GetMapping("teacher/{teacherId}")
+    public ResponseEntity<List<ThemeDTO>> getThemesByTeacher(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(themeService.getThemesByTeacher(teacherId));
+    }
+
     @Operation(summary = "Criação de novos temas. NOVO")
     @PostMapping
     public ResponseEntity<Void> createTheme(@RequestBody CreateThemeRequest createThemeRequest) {

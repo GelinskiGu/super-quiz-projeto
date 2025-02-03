@@ -35,4 +35,13 @@ public class ThemeService {
         theme.setGroup(group);
         themeRepository.save(theme);
     }
+
+    public List<ThemeDTO> getThemesByTeacher(Long teacherId) {
+        List<Theme> allByTeacherId = themeRepository.findAllByTeacherId(teacherId);
+        return allByTeacherId.stream().map(theme -> new ThemeDTO(theme.getId(), formatName(theme.getName(), theme.getGroup().getName()))).toList();
+    }
+
+    private String formatName(String nameTheme, String nameGroup) {
+        return nameGroup + " - " + nameTheme;
+    }
 }
