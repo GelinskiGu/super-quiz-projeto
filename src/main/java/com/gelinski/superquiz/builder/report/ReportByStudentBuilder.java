@@ -41,7 +41,7 @@ public class ReportByStudentBuilder implements Builder {
         phaseOneAnswerElementMap.forEach((key, value) -> {
             ElementsPhaseOneDTO elementsPhaseOneDTO = new ElementsPhaseOneDTO();
             elementsPhaseOneDTO.setElement(key);
-            elementsPhaseOneDTO.setTries(value.size());
+            elementsPhaseOneDTO.setTries(Long.valueOf(value.stream().filter(phase -> !phase.isCorrect()).count()).intValue());
             elementsPhaseOneDTO.setTime(convertTime(value.stream().max(Comparator.comparing(PhaseOneAnswer::getSeconds)).get().getSeconds()));
             elementsPhaseOneDTOS.add(elementsPhaseOneDTO);
         });
